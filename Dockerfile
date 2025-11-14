@@ -1,9 +1,12 @@
-FROM python:3.12-slim
+FROM debian:13
 
-# Install lftp
-RUN apt-get update && \
-    apt-get install -y lftp cifs-utils && \
-    apt-get clean
+
+# Install python, pip, CIFS mount tools, lftp, and clean up
+RUN apt update && apt install -y \
+    python3 python3-pip \
+    cifs-utils \
+    lftp \
+    && apt clean && rm -rf /var/lib/apt/lists/*
 
 # Create app directory
 WORKDIR /app
@@ -16,4 +19,4 @@ COPY AppleConverter.py .
 
 
 # Run continuously
-ENTRYPOINT ["python3 /app/AppleConverter.py"]
+CMD ["python3","/app/AppleConverter.py"]
